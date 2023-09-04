@@ -11,7 +11,7 @@ The main objective of this project is to create an attractive, user-friendly, an
 
 # SHOULD
 
-- [ ] Integration of advanced search functionality: Add an advanced search feature allowing users to filter products by category, price, availability, etc. This will facilitate the search for specific products and enhance the user experience.
+- [x] Integration of advanced search functionality: Add an advanced search feature allowing users to filter products by category, price, availability, etc. This will facilitate the search for specific products and enhance the user experience.
 - [ ] Product recommendation system integration: Set up a system that suggests similar or complemen- tary products to customers based on their purchase history or recommendation algorithms. This can encourage cross-selling and increase the average customer order value. 
 - [x] Order tracking feature: Allow customers to track the status of their orders in real-time. This will enable them to know the whereabouts of their parcels and estimate the delivery date, improving transparency and customer satisfaction.
 - [x] Social media integration: Add social media sharing buttons on product pages, allowing customers to share their purchases or favorites on social networks. This can boost the visibility of your online store and attract new customers. 
