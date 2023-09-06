@@ -1,0 +1,78 @@
+# BEGIN WordPress
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+
+</IfModule>
+
+# Avoid comment spam
+<IfModule mod_rewrite.c>
+RewriteCond %{REQUEST_METHOD} POST
+RewriteCond %{REQUEST_URI} .wp-comments-post\.php*
+RewriteCond %{HTTP_REFERER} !.ecg-btp.ci.* [OR]
+RewriteCond %{HTTP_USER_AGENT} ^$
+RewriteRule (.*) ^http://%{REMOTE_ADDR}/$ [R=301,L]
+</IfModule>
+
+
+# Disable display of directory contents
+Options All -Indexes
+
+# Alternative to prevent directory listing
+IndexIgnore *
+
+# Hide the information from server
+ServerSignature Off
+
+# Enable following symbolic links
+Options +FollowSymLinks
+
+# Default encoding of text and HTML files
+AddDefaultCharset UTF-8
+
+# Protect the wp-config.php file
+<files wp-config.php>
+order allow,deny
+deny from all
+</files>
+
+# Protect .htaccess and .htpasswds files
+<Files ~ "^.*\.([Hh][Tt][AaPp])">
+order allow,deny
+deny from all
+satisfy all
+</Files>
+
+# Prevent the detection of an author's ID
+<IfModule mod_rewrite.c>
+RewriteCond %{QUERY_STRING} ^author=([0-9]*)
+RewriteRule .* - [F]
+</IfModule>
+
+# Disable hotlinking of your images
+RewriteEngine On
+RewriteCond %{HTTP_REFER} !^$
+RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?ecg-btp.ci [NC]
+RewriteRule \.(jpg|jpeg|png|gif)$ http://fakeimg.pl/400x200/?text=Do_not_touch_the_images [NC,R,L]
+
+# Protection against file injections
+RewriteCond %{REQUEST_METHOD} GET
+RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=http:// [OR]
+RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=(\.\.//?)+ [OR]
+RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=/([a-z0-9_.]//?)+ [NC]
+RewriteRule .* - [F]
+
+# Various protections (XSS, clickjacking and MIME-Type sniffing)
+<ifModule mod_headers.c>
+Header set X-XSS-Protection "1; mode=block"
+Header always append X-Frame-Options SAMEORIGIN
+Header set X-Content-Type-Options: "nosniff”
+</ifModule>
+
+# END WordPress
